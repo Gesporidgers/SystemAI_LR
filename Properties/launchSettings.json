@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SystemAI_LR (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SystemAI_LR (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
