@@ -36,7 +36,8 @@ namespace SystemAI_LR
         Timer timer;
         public LR1()
         {
-            
+            timer = new Timer() { Interval = 30 };
+            timer.Elapsed += Timer_Elapsed;
             InitializeComponent();
         }
 
@@ -45,8 +46,7 @@ namespace SystemAI_LR
         private void SwitchCamera_Checked(object sender, RoutedEventArgs e)
         {
 
-            timer = new Timer() { Interval = 30 };
-            timer.Elapsed += Timer_Elapsed;
+            
             if (e.OriginalSource is ToggleButton toggle && toggle.IsChecked.Value)
             {
                 capture = new VideoCapture(0);
@@ -58,6 +58,7 @@ namespace SystemAI_LR
             {
                 timer.Stop();
                 capture?.Dispose();
+                //sourceImg.Source = null;
             }
         }
 
