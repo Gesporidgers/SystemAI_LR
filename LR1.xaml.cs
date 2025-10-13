@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using System.Timers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -43,15 +44,21 @@ namespace SystemAI_LR
 
         
 
-        private void SwitchCamera_Checked(object sender, RoutedEventArgs e)
+        private async void SwitchCamera_Checked(object sender, RoutedEventArgs e)
         {
 
             
             if (e.OriginalSource is ToggleButton toggle && toggle.IsChecked.Value)
             {
-                capture = new VideoCapture(0);
-
-                capture.Set(CapProp.Fps, 30);
+                Waiting.Visibility = Visibility.Visible;
+                toggle.IsEnabled = false;
+                await Task.Run(() =>
+                {
+                    capture = new VideoCapture(0);
+                    capture.Set(CapProp.Fps, 30);
+                });
+                toggle.IsEnabled = true;
+                Waiting.Visibility = Visibility.Collapsed;
                 timer.Start();
             }
             else
