@@ -10,22 +10,10 @@
     >
 
     <StackPanel Padding="10" Spacing="10">
-        <Grid ColumnSpacing="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-                <Image Height="600" x:Name="sourceImg"/>
-            </Border>
-            <Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
-                <Image Height="600"/>
-            </Border>
-        </Grid>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Выбрать изображение" Click="Button_Click"/>
-            <Button Content="Detect" Click="Button_Click_1"/>
+        <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4">
+            <Image Height="600" x:Name="sourceImg"/>
+        </Border>
+        <ToggleButton Content="Включить камеру" x:Name="SwitchCamera" Checked="SwitchCamera_Checked" />
+
         </StackPanel>
-        
-    </StackPanel>
 </UserControl>

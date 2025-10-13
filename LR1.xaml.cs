@@ -12,9 +12,11 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Windows.Storage.Pickers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Timers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Capture;
@@ -25,47 +27,64 @@ using Windows.Storage.Streams;
 
 namespace SystemAI_LR
 {
-	public sealed partial class LR1 : UserControl
-	{
-		string filePath;
-		public LR1()
-		{
-			InitializeComponent();
-		}
+    public sealed partial class LR1 : UserControl
+    {
+        string filePath;
+        VideoCapture capture;
+        Image<Bgr, byte> currentFrame;
+        Image<Gray, byte> detectedFace = null;
+        Timer timer;
+        public LR1()
+        {
+            
+            InitializeComponent();
+        }
 
-		private async void Button_Click(object sender, RoutedEventArgs e)
-		{
-			if (sender is Button button)
-			{
-				//disable the button to avoid double-clicking
-				button.IsEnabled = false;
+        
 
-				var picker = new FileOpenPicker(button.XamlRoot.ContentIslandEnvironment.AppWindowId);
+        private void SwitchCamera_Checked(object sender, RoutedEventArgs e)
+        {
 
-				picker.CommitButtonText = "Выберите изображение";
+            timer = new Timer() { Interval = 30 };
+            timer.Elapsed += Timer_Elapsed;
+            if (e.OriginalSource is ToggleButton toggle && toggle.IsChecked.Value)
+            {
+                capture = new VideoCapture(0);
 
-				picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+                capture.Set(CapProp.Fps, 30);
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+                capture?.Dispose();
+            }
+        }
 
-				picker.ViewMode = PickerViewMode.Thumbnail;
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            currentFrame = capture.QueryFrame().ToImage<Bgr, byte>().Resize(320, 240, Inter.Cubic);
+            if (currentFrame != null)
+            {
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    currentFrame.ToBitmap();
+                    sourceImg.Source = ToBitmapSource(currentFrame);
+                });
+            }
+        }
 
-				picker.FileTypeFilter.Add(".jpg");
-				picker.FileTypeFilter.Add(".png");
-				picker.FileTypeFilter.Add(".bmp");
-				
-				// Show the picker dialog window
-				var file = await picker.PickSingleFileAsync();
-				sourceImg.Source = new BitmapImage(new Uri(file.Path));
-				filePath = file.Path;
-				button.IsEnabled = true;
-
-			}
-
-		}
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			Image<Bgr, byte> image = new Image<Bgr, byte>(filePath);
-			Image<Gray, byte> grascale = image.Convert<Gray, byte>();
-		}
-	}
+        private ImageSource ToBitmapSource(Image<Bgr, byte> image)
+        {
+            using (var ms = new MemoryStream())
+            {
+                image.ToBitmap().Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                ms.Seek(0, SeekOrigin.Begin);
+                var bitmapImage = new BitmapImage();
+                bitmapImage.SetSource(ms.AsRandomAccessStream());
+                
+                return bitmapImage;
+            }
+        }
+    }
 }
