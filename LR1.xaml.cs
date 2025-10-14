@@ -1,5 +1,6 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Face;
 using Emgu.CV.Structure;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -35,7 +36,8 @@ namespace SystemAI_LR
         VideoCapture capture;
         Image<Bgr, byte> currentFrame;
         Timer timer;
-        CascadeClassifier cascade;
+        CascadeClassifier cascade1;
+        CascadeClassifier cascade2;
 		private readonly object captureLock = new();
         public LR1()
         {
@@ -69,12 +71,18 @@ namespace SystemAI_LR
 
             lock (captureLock)
             {
-                cascade = new("Assets/haarcascade_frontalface_default.xml");
+                cascade1 = new("Assets/haarcascade_frontalface_default.xml");
+                cascade2 = new("Assets/haarcascade_eye.xml");
                 currentFrame = capture.QueryFrame().ToImage<Bgr, byte>();
                 if (currentFrame != null)
                 {
                     Image<Gray, byte> grayFrame = currentFrame.Convert<Gray, byte>();
-                    Rectangle[] faces = cascade.DetectMultiScale(grayFrame, 1.1, 10, System.Drawing.Size.Empty);
+                    Rectangle[] faces = cascade1.DetectMultiScale(grayFrame, 1.1, 10, System.Drawing.Size.Empty);
+                    Rectangle[] eyesv = cascade2.DetectMultiScale(grayFrame, 1.1, 10, System.Drawing.Size.Empty);
+                    foreach (var eye in eyesv)
+                    {
+						currentFrame.Draw(eye, new Bgr(System.Drawing.Color.Green), 2);
+					}
                     foreach (var face in faces)
                     {
                         currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 2);

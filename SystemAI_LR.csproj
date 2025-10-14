@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Content Include="Assets\haarcascade_frontalface_default.xml" />
+    <Content Include="Assets\haarcascade_eye.xml" />
   </ItemGroup>
 
   <ItemGroup>
