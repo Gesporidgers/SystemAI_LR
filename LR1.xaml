@@ -14,7 +14,7 @@
             <Image Height="600" x:Name="sourceImg"/>
         </Border>
         <StackPanel Orientation="Horizontal" Spacing="10">
-            <ToggleButton Content="Включить камеру" x:Name="SwitchCamera" Checked="SwitchCamera_Checked" />
+            <ToggleButton Content="Включить камеру" x:Name="SwitchCamera" Checked="SwitchCamera_Checked" Unchecked="SwitchCamera_Unchecked"/>
             <ProgressRing x:Name="Waiting" Visibility="Collapsed"/>
         </StackPanel>
         

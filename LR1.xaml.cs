@@ -13,6 +13,7 @@ using Microsoft.Windows.Storage.Pickers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -33,8 +34,9 @@ namespace SystemAI_LR
         string filePath;
         VideoCapture capture;
         Image<Bgr, byte> currentFrame;
-        Image<Gray, byte> detectedFace = null;
         Timer timer;
+        CascadeClassifier cascade;
+		private readonly object captureLock = new();
         public LR1()
         {
             timer = new Timer() { Interval = 30 };
@@ -46,9 +48,7 @@ namespace SystemAI_LR
 
         private async void SwitchCamera_Checked(object sender, RoutedEventArgs e)
         {
-
-            
-            if (e.OriginalSource is ToggleButton toggle && toggle.IsChecked.Value)
+            if (e.OriginalSource is ToggleButton toggle)
             {
                 Waiting.Visibility = Visibility.Visible;
                 toggle.IsEnabled = false;
@@ -56,29 +56,34 @@ namespace SystemAI_LR
                 {
                     capture = new VideoCapture(0);
                     capture.Set(CapProp.Fps, 30);
+                    capture.Set(CapProp.HwAcceleration, (double)VideoAccelerationType.D3D11);
                 });
                 toggle.IsEnabled = true;
                 Waiting.Visibility = Visibility.Collapsed;
                 timer.Start();
             }
-            else
-            {
-                timer.Stop();
-                capture?.Dispose();
-                //sourceImg.Source = null;
-            }
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            currentFrame = capture.QueryFrame().ToImage<Bgr, byte>().Resize(320, 240, Inter.Cubic);
-            if (currentFrame != null)
+
+            lock (captureLock)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                cascade = new("Assets/haarcascade_frontalface_default.xml");
+                currentFrame = capture.QueryFrame().ToImage<Bgr, byte>();
+                if (currentFrame != null)
                 {
-                    currentFrame.ToBitmap();
-                    sourceImg.Source = ToBitmapSource(currentFrame);
-                });
+                    Image<Gray, byte> grayFrame = currentFrame.Convert<Gray, byte>();
+                    Rectangle[] faces = cascade.DetectMultiScale(grayFrame, 1.1, 10, System.Drawing.Size.Empty);
+                    foreach (var face in faces)
+                    {
+                        currentFrame.Draw(face, new Bgr(System.Drawing.Color.Red), 2);
+					}
+					DispatcherQueue.TryEnqueue(() =>
+                    {
+                        sourceImg.Source = ToBitmapSource(currentFrame);
+                    });
+                }
             }
         }
 
@@ -94,5 +99,18 @@ namespace SystemAI_LR
                 return bitmapImage;
             }
         }
-    }
+
+		private void SwitchCamera_Unchecked(object sender, RoutedEventArgs e)
+		{
+            timer.Stop();
+            
+            lock (captureLock)
+            {
+                capture?.Dispose();
+                capture = null;
+                sourceImg.Source = null;
+            }
+           
+		}
+	}
 }
