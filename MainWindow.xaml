@@ -12,10 +12,20 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
+    <StackPanel>
+        <TitleBar x:Name="titleBar" Title="Лабораторные работы по дисциплине &quot;Системы искусственного интеллекта &quot;" >
+            <TitleBar.IconSource>
+                <SymbolIconSource Symbol="View"/>
+            </TitleBar.IconSource>
+        </TitleBar>
+        <TabView CanReorderTabs="False" CanTearOutTabs="False" IsAddTabButtonVisible="False" >
+            <TabViewItem Header="Лабораторная 1" IsClosable="False">
+                <local:LR1/>
+            </TabViewItem>
+            <TabViewItem Header="Лабораторная 2" IsClosable="False">
+                <local:LR2/>
+            </TabViewItem>
 
-    <TabView CanReorderTabs="False" CanTearOutTabs="False" IsAddTabButtonVisible="False" >
-        <TabViewItem Header="Лабораторная 1" IsClosable="False">
-            <local:LR1/>
-        </TabViewItem>
-    </TabView>
+        </TabView>
+    </StackPanel>
 </Window>

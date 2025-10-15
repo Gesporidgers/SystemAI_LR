@@ -41,7 +41,9 @@ namespace SystemAI_LR
 		private readonly object captureLock = new();
         public LR1()
         {
-            timer = new Timer() { Interval = 30 };
+			cascade1 = new("Assets/haarcascade_frontalface_default.xml");
+			cascade2 = new("Assets/haarcascade_eye.xml");
+			timer = new Timer() { Interval = 30 };
             timer.Elapsed += Timer_Elapsed;
             InitializeComponent();
         }
@@ -58,7 +60,7 @@ namespace SystemAI_LR
                 {
                     capture = new VideoCapture(0);
                     capture.Set(CapProp.Fps, 30);
-                    capture.Set(CapProp.HwAcceleration, (double)VideoAccelerationType.D3D11);
+                    //capture.Set(CapProp.HwAcceleration, (double)VideoAccelerationType.D3D11);
                 });
                 toggle.IsEnabled = true;
                 Waiting.Visibility = Visibility.Collapsed;
@@ -71,8 +73,7 @@ namespace SystemAI_LR
 
             lock (captureLock)
             {
-                cascade1 = new("Assets/haarcascade_frontalface_default.xml");
-                cascade2 = new("Assets/haarcascade_eye.xml");
+                
                 currentFrame = capture.QueryFrame().ToImage<Bgr, byte>();
                 if (currentFrame != null)
                 {
@@ -91,6 +92,7 @@ namespace SystemAI_LR
                     {
                         sourceImg.Source = ToBitmapSource(currentFrame);
                     });
+                   
                 }
             }
         }
@@ -103,7 +105,6 @@ namespace SystemAI_LR
                 ms.Seek(0, SeekOrigin.Begin);
                 var bitmapImage = new BitmapImage();
                 bitmapImage.SetSource(ms.AsRandomAccessStream());
-                
                 return bitmapImage;
             }
         }

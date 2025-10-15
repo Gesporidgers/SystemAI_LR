@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -27,6 +28,9 @@ namespace SystemAI_LR
         {
             InitializeComponent();
             AppWindow.Resize(new Windows.Graphics.SizeInt32(1200, 800));
+            Window window = this;
+            window.ExtendsContentIntoTitleBar = true;
+            window.SetTitleBar(titleBar);
         }
     }
 }
