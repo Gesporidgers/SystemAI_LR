@@ -26,8 +26,7 @@
                 <SymbolIcon x:Name="iconImgStatus1" Symbol="Accept" Grid.Column="1" Grid.Row="0" Foreground="Lime" Visibility="Collapsed"/>
                 <SymbolIcon x:Name="iconImgStatus2" Symbol="Accept" Grid.Column="1" Grid.Row="1" Foreground="Lime" Visibility="Collapsed"/>
                 <Button Grid.Column="0" Grid.Row="1" Width="225" HorizontalAlignment="Center" Content="Выбрать изображение объекта" Click="Button_ClickAsync" x:Name="OpenObject"/>
-                <CheckBox Grid.Row="2" Content="Отобразить маркеры" HorizontalAlignment="Center" Grid.ColumnSpan="2" IsChecked="{x:Bind flag1, Mode=TwoWay}"/>
-                <CheckBox Grid.Row="3" Content="Соединить подобные маркеры" HorizontalAlignment="Center" Grid.ColumnSpan="2" IsChecked="{x:Bind flag2, Mode=TwoWay}"/>
+                
                 <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Обработать" HorizontalAlignment="Center" x:Name="ProcessFrame" Click="ProcessFrame_Click"/>
             </Grid>
 

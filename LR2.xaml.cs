@@ -136,8 +136,8 @@ namespace SystemAI_LR
 						System.Drawing.Point p1 = System.Drawing.Point.Round(modelKeyPoints[m.QueryIdx].Point);
 						System.Drawing.Point p2 = System.Drawing.Point.Round(sceneKeyPoints[m.TrainIdx].Point);
 						
-						CvInvoke.Circle(imgSceneColor,p2,4, new MCvScalar(255,0,0),-1);
-						CvInvoke.Circle(imgToFindColor,p1,4, new MCvScalar(255,0,0),-1);
+						CvInvoke.Circle(imgSceneColor,p2,4, new MCvScalar(255,0,0),2);
+						CvInvoke.Circle(imgToFindColor,p1,4, new MCvScalar(255,0,0),2);
 					}
 					PointF[] sceneCorners = CvInvoke.PerspectiveTransform(modelCorners, homography);
 					System.Drawing.Point[] points = (from p in sceneCorners select System.Drawing.Point.Round(p)).ToArray();
@@ -151,7 +151,7 @@ namespace SystemAI_LR
 						System.Drawing.Point p1 = System.Drawing.Point.Round(modelKeyPoints[m.QueryIdx].Point);
 						System.Drawing.Point p2 = System.Drawing.Point.Round(sceneKeyPoints[m.TrainIdx].Point);
 
-						imgResult.Draw(new LineSegment2D(new System.Drawing.Point(p1.X + imgSceneColor.Width, p1.Y), p2), new Bgr(Color.LightPink), 1);
+						imgResult.Draw(new LineSegment2D(new System.Drawing.Point(p1.X + imgSceneColor.Width, p1.Y), p2), new Bgr(Color.Blue), 1);
 					}
 					imgResult.DrawPolyline(points, true, bgrFoundImageColor, 2);
 					ResultImageS.Source = ClassUtility.ToBitmapSource(imgResult);
