@@ -90,24 +90,13 @@ namespace SystemAI_LR
 					}
 					DispatcherQueue.TryEnqueue(() =>
                     {
-                        sourceImg.Source = ToBitmapSource(currentFrame);
+                        sourceImg.Source = ClassUtility.ToBitmapSource(currentFrame);
                     });
                    
                 }
             }
         }
 
-        private ImageSource ToBitmapSource(Image<Bgr, byte> image)
-        {
-            using (var ms = new MemoryStream())
-            {
-                image.ToBitmap().Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-                var bitmapImage = new BitmapImage();
-                bitmapImage.SetSource(ms.AsRandomAccessStream());
-                return bitmapImage;
-            }
-        }
 
 		private void SwitchCamera_Unchecked(object sender, RoutedEventArgs e)
 		{

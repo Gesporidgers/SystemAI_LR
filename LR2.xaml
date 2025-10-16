@@ -28,12 +28,19 @@
                 <Button Grid.Column="0" Grid.Row="1" Width="225" HorizontalAlignment="Center" Content="Выбрать изображение объекта" Click="Button_ClickAsync" x:Name="OpenObject"/>
                 <CheckBox Grid.Row="2" Content="Отобразить маркеры" HorizontalAlignment="Center" Grid.ColumnSpan="2" IsChecked="{x:Bind flag1, Mode=TwoWay}"/>
                 <CheckBox Grid.Row="3" Content="Соединить подобные маркеры" HorizontalAlignment="Center" Grid.ColumnSpan="2" IsChecked="{x:Bind flag2, Mode=TwoWay}"/>
-                <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Обработать" HorizontalAlignment="Center"/>
+                <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Обработать" HorizontalAlignment="Center" x:Name="ProcessFrame" Click="ProcessFrame_Click"/>
             </Grid>
 
         </SplitView.Pane>
-        <Border BorderBrush="Gray">
-            <Image Height="800"/>
-        </Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ProgressBar Visibility="Collapsed" Padding="10" x:Name="prog" Maximum="13"/>
+            <Border BorderBrush="Gray">
+                <Image Height="800" x:Name="ResultImageS"/>
+            </Border>
+        </Grid>
+        
     </SplitView>
 </UserControl>
