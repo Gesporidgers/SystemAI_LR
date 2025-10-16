@@ -1,29 +1,16 @@
-﻿using ABI.Windows.Foundation;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 
 using Emgu.CV.Util;
-using Emgu.CV.XFeatures2D;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Windows.Storage.Pickers;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -64,21 +51,6 @@ namespace SystemAI_LR
 			Image<Gray, Byte> imgSceneGray = null;
 			Image<Gray, Byte> imgToFindGray = null;
 
-			VectorOfKeyPoint vkpSceneKeyPoints, vkpToFindKeyPoints;
-			int intKNumNearestNeighbors = 2;
-			double dblUniquenessThreshold = 0.8;
-
-			int intNumNonZeroElements;
-
-			double dblScaleIncrement = 1.5;
-			int intRotationBins = 20;
-
-			double dblRansacReprojectionThreshold = 2.0;
-
-			Rectangle rectImageToFind;
-			PointF[] ptfPointsF;
-			System.Drawing.Point[] ptPoints;
-
 			imgSceneGray = imgSceneColor.Convert<Gray, Byte>();
 			imgToFindGray = imgToFindColor.Convert<Gray, Byte>();
 			var sift = new SIFT(); // или new SIFT(0, 3, 0.04, 10, 1.6)
@@ -109,7 +81,7 @@ namespace SystemAI_LR
 				if (m.Distance < 0.75 * n.Distance)
 					goodMatches.Add(m);
 			}
-			
+
 
 			// --- 5. Гомография
 			if (goodMatches.Count >= 4)
@@ -129,20 +101,20 @@ namespace SystemAI_LR
 					new PointF(rect.Right, rect.Top),
 					new PointF(rect.Right, rect.Bottom),
 					new PointF(rect.Left, rect.Bottom)
-				};	
+				};
 					imgResult = imgSceneColor.Clone();
 					foreach (var m in goodMatches)
 					{
 						System.Drawing.Point p1 = System.Drawing.Point.Round(modelKeyPoints[m.QueryIdx].Point);
 						System.Drawing.Point p2 = System.Drawing.Point.Round(sceneKeyPoints[m.TrainIdx].Point);
-						
-						CvInvoke.Circle(imgSceneColor,p2,4, new MCvScalar(255,0,0),2);
-						CvInvoke.Circle(imgToFindColor,p1,4, new MCvScalar(255,0,0),2);
+
+						CvInvoke.Circle(imgSceneColor, p2, 4, new MCvScalar(255, 0, 0), 2);
+						CvInvoke.Circle(imgToFindColor, p1, 4, new MCvScalar(255, 0, 0), 2);
 					}
 					PointF[] sceneCorners = CvInvoke.PerspectiveTransform(modelCorners, homography);
 					System.Drawing.Point[] points = (from p in sceneCorners select System.Drawing.Point.Round(p)).ToArray();
 
-					
+
 
 					// --- 7. Рисуем совпадения
 					imgResult = imgSceneColor.ConcateHorizontal(imgToFindColor);
@@ -217,4 +189,3 @@ namespace SystemAI_LR
 		}
 	}
 }
-	
