@@ -25,7 +25,9 @@
             <TabViewItem Header="Лабораторная 2" IsClosable="False">
                 <local:LR2/>
             </TabViewItem>
-
+            <TabViewItem Header="Лабораторная 3" IsClosable="False">
+                <local:LR3/>
+            </TabViewItem>
         </TabView>
     </StackPanel>
 </Window>
