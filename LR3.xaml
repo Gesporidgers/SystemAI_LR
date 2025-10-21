@@ -18,10 +18,20 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Image Grid.Column="0" Grid.Row="0" />
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <InfoBar IsOpen="False" Title="Ошибка" Message="Распознавание не удалось" Grid.Column="1" Grid.Row="0" x:Name="ErrBar"/>
+        <StackPanel Grid.Column="1" Grid.Row="0" x:Name="TextPanel" Visibility="Collapsed">
             <TextBlock Text="Распознанный текст" FontWeight="Bold"/>
             <RichEditBox Margin="20" Height="600"/>
         </StackPanel>
-        
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="40">
+            <Button Content="Открыть файл"  Click="OpenImage"/>
+            <Button Content="Распознать"  Click="ProccessImage"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="5">
+            <TextBlock Text="Язык:" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
+            <RadioButton x:Name="RusBox" Content="Русский" />
+            <RadioButton x:Name="EngBox" Content="Английский" />
+        </StackPanel>
+       
     </Grid>
 </UserControl>
