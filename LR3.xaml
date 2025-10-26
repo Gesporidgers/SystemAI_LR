@@ -6,7 +6,7 @@
     xmlns:local="using:SystemAI_LR"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Loaded="UserControl_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,11 +17,11 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.Row="0" />
+        <Image Grid.Column="0" Grid.Row="0" x:Name="srcImg" Height="650"/>
         <InfoBar IsOpen="False" Title="Ошибка" Message="Распознавание не удалось" Grid.Column="1" Grid.Row="0" x:Name="ErrBar"/>
         <StackPanel Grid.Column="1" Grid.Row="0" x:Name="TextPanel" Visibility="Collapsed">
             <TextBlock Text="Распознанный текст" FontWeight="Bold"/>
-            <RichEditBox Margin="20" Height="600"/>
+            <RichEditBox Margin="20" Height="600" x:Name="ocredText"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="40">
             <Button Content="Открыть файл"  Click="OpenImage"/>
