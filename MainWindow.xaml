@@ -13,19 +13,19 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
     <StackPanel>
-        <TitleBar x:Name="titleBar" Title="Лабораторные работы по дисциплине &quot;Системы искусственного интеллекта &quot;" >
+        <TitleBar x:Name="titleBar" Title="Системы искусственного интеллекта" >
             <TitleBar.IconSource>
                 <SymbolIconSource Symbol="View"/>
             </TitleBar.IconSource>
         </TitleBar>
         <TabView CanReorderTabs="False" CanTearOutTabs="False" IsAddTabButtonVisible="False" >
-            <TabViewItem Header="Лабораторная 1" IsClosable="False">
+            <TabViewItem Header="Распознавание лиц" IsClosable="False">
                 <local:LR1/>
             </TabViewItem>
-            <TabViewItem Header="Лабораторная 2" IsClosable="False">
+            <TabViewItem Header="Нахождение сходств" IsClosable="False">
                 <local:LR2/>
             </TabViewItem>
-            <TabViewItem Header="Лабораторная 3" IsClosable="False">
+            <TabViewItem Header="Распознавание текста" IsClosable="False">
                 <local:LR3/>
             </TabViewItem>
         </TabView>
