@@ -81,7 +81,7 @@ namespace SystemAI_LR
 			try
 			{
 				string tesPath = Emgu.CV.OCR.Tesseract.DefaultTesseractDirectory;
-				_ocr = new Tesseract(tesPath, lang, OcrEngineMode.TesseractOnly);
+				_ocr = new Tesseract(tesPath, lang, OcrEngineMode.Default);
 			}
 			catch (Exception ex)
 			{

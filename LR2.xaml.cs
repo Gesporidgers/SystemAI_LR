@@ -89,7 +89,7 @@ namespace SystemAI_LR
 				PointF[] modelPoints = goodMatches.ToArray().Select(m => modelKeyPoints[m.QueryIdx].Point).ToArray();
 				PointF[] scenePoints = goodMatches.ToArray().Select(m => sceneKeyPoints[m.TrainIdx].Point).ToArray();
 
-				Mat homography = CvInvoke.FindHomography(modelPoints, scenePoints, RobustEstimationAlgorithm.Ransac, 5.0);
+				Mat homography = CvInvoke.FindHomography(modelPoints, scenePoints, RobustEstimationAlgorithm.Ransac, 3);
 
 				if (!homography.IsEmpty)
 				{
